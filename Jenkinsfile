@@ -4,6 +4,21 @@ podTemplate(containers: [containerTemplate(name: 'maven', image: 'maven', comman
     container('maven') {
       sh 'mvn -B -ntp -Dmaven.test.failure.ignore verify'
     }
-    junit '**/target/surefire-reports/TEST-*.xml'
+    junit(testResults: '**/target/surefire-reports/TEST-*.xml',
+          testDataPublishers: [
+            jiraTestResultReporter(
+              configs: [
+                jiraStringField(fieldKey: 'summary', value: '[CCTEST]' + '${DEFAULT_SUMMARY}'),
+                jiraStringField(fieldKey: 'description', value: 'Test only. Ignore')
+              ],
+              projectKey: 'BEE',
+              issueType: '3', // task
+              autoRaiseIssue: true,
+              autoResolveIssue: true,
+              autoUnlinkIssue: false,
+              overrideResolvedIssues: true
+            )
+          ])
+    archiveArtifacts artifacts: '**/target/surefire-reports/TEST-*.xml', allowEmptyArchive: true
   }
 }
