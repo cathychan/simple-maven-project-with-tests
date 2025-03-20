@@ -12,7 +12,7 @@ podTemplate(containers: [containerTemplate(name: 'maven', image: 'maven', comman
                 jiraStringField(fieldKey: 'description', value: 'Test ticket for JiraTestResultReporter. Ignore')
               ],
               projectKey: 'BEE',
-              issueType: '3', // task
+              issueType: '11185', // automated test failure
               autoRaiseIssue: true,
               autoResolveIssue: true,
               autoUnlinkIssue: false,
